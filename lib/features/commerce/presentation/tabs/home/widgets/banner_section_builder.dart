@@ -1,4 +1,5 @@
 import 'package:e_commerce/core/base/base_status.dart';
+import 'package:e_commerce/core/utils/padding_extension.dart';
 import 'package:e_commerce/features/commerce/presentation/tabs/home/cubit/home_cubit.dart';
 import 'package:e_commerce/features/commerce/presentation/tabs/home/cubit/home_state.dart';
 import 'package:e_commerce/features/commerce/presentation/tabs/home/widgets/banner_item_builder.dart';
@@ -24,7 +25,7 @@ class BannerSectionBuilder extends StatelessWidget {
           return Container(
             alignment: Alignment.center,
             child: Text(
-              state.bannersStatus?.message ?? 'Failed to load banners',
+              state.bannersStatus!.message!,
               textAlign: TextAlign.center,
             ),
           );
@@ -41,7 +42,7 @@ class BannerSectionBuilder extends StatelessWidget {
           );
         }
 
-        return BannerItemBuilder(bannerEntity: banners);
+        return BannerItemBuilder(bannerEntity: banners).horizontalPadding(16);
       },
     );
   }

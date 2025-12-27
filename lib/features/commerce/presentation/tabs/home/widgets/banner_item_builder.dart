@@ -74,7 +74,11 @@ class _BannerItemBuilderState extends State<BannerItemBuilder> {
           });
         },
         itemBuilder: (context, index) {
-          return HomeBannerCard(bannerEntity: widget.bannerEntity[index]);
+          return HomeBannerCard(
+            bannerEntity: widget.bannerEntity[index],
+            // isSelected: _currentPage == index,
+            // length: widget.bannerEntity.length,
+          );
         },
       ),
     );

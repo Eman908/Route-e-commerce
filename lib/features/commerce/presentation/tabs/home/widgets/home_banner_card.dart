@@ -4,8 +4,15 @@ import 'package:e_commerce/features/commerce/domain/entity/banner_entity.dart';
 import 'package:flutter/material.dart';
 
 class HomeBannerCard extends StatelessWidget {
-  const HomeBannerCard({super.key, required this.bannerEntity});
+  const HomeBannerCard({
+    super.key,
+    required this.bannerEntity,
+    // required this.isSelected,
+    // required this.length,
+  });
   final BannerEntity bannerEntity;
+  // final bool isSelected;
+  // final int length;
   @override
   Widget build(BuildContext context) {
     final isStartAligned = bannerEntity.alignment == Alignment.centerRight;
@@ -63,6 +70,24 @@ class HomeBannerCard extends StatelessWidget {
               ),
               child: const Text('Shop Now'),
             ),
+
+            // Row(
+            //   crossAxisAlignment: CrossAxisAlignment.center,
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   spacing: 16,
+            //   children: [
+            //     for (int i = 0; i < length; i++)
+            //       AnimatedContainer(
+            //         height: 8,
+            //         width: isSelected ? 16 : 8,
+            //         decoration: BoxDecoration(
+            //           color: isSelected ? AppColors.darkBlue : AppColors.white,
+            //           borderRadius: BorderRadius.circular(100),
+            //         ),
+            //         duration: const Duration(microseconds: 300),
+            //       ),
+            //   ],
+            // ),
           ],
         ),
       ),

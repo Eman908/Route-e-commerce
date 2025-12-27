@@ -1,13 +1,14 @@
 import 'package:e_commerce/core/utils/context_extension.dart';
-import 'package:e_commerce/features/commerce/domain/entity/categories_entity.dart';
+import 'package:e_commerce/core/utils/padding_extension.dart';
+import 'package:e_commerce/features/commerce/presentation/tabs/home/widgets/categories_section_builder.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesSection extends StatelessWidget {
-  const CategoriesSection({super.key, required this.categoriesEntity});
-  final List<CategoriesEntity> categoriesEntity;
+  const CategoriesSection({super.key});
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: 16,
       children: [
         Row(
           children: [
@@ -20,24 +21,8 @@ class CategoriesSection extends StatelessWidget {
             const Spacer(),
             TextButton(onPressed: () {}, child: const Text('view all')),
           ],
-        ),
-        SizedBox(
-          height: 200,
-          child: GridView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: categoriesEntity.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 1,
-            ),
-            itemBuilder: (context, index) {
-              return Text(
-                categoriesEntity[index].name ?? 'heheh',
-                style: const TextStyle(color: Colors.red),
-              );
-            },
-          ),
-        ),
+        ).horizontalPadding(16),
+        const CategoriesSectionBuilder(),
       ],
     );
   }

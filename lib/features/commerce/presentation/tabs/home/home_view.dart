@@ -1,7 +1,7 @@
 import 'package:e_commerce/features/commerce/presentation/tabs/home/cubit/home_cubit.dart';
 import 'package:e_commerce/features/commerce/presentation/tabs/home/cubit/home_state.dart';
 import 'package:e_commerce/features/commerce/presentation/tabs/home/widgets/banner_section_builder.dart';
-import 'package:e_commerce/features/commerce/presentation/tabs/home/widgets/categories_section_builder.dart';
+import 'package:e_commerce/features/commerce/presentation/tabs/home/widgets/categories_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,9 +29,9 @@ class _HomeViewState extends State<HomeView> {
       slivers: [
         // Banners Section - Handles its own loading/error states
         SliverToBoxAdapter(child: BannerSectionBuilder()),
-
+        SliverToBoxAdapter(child: SizedBox(height: 24)),
         // Categories Section - Handles its own loading/error states
-        SliverToBoxAdapter(child: CategoriesSectionBuilder()),
+        SliverToBoxAdapter(child: CategoriesSection()),
       ],
     );
   }
