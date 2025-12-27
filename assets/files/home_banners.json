@@ -1,0 +1,28 @@
+{
+    "banners": [
+        {
+            "image_path": "assets/images/headphone.png",
+            "title": "UP TO\n25% OFF",
+            "category_name": "For all Headphones\n& AirPods",
+            "alignment": "start",
+            "btn_color": 4278583375,
+            "text_color": 4294967295
+        },
+        {
+            "image_path": "assets/images/makeup.png",
+            "title": "UP TO\n30% OFF",
+            "category_name": "For all Makeup\n& Skincare",
+            "alignment": "end",
+            "btn_color": 4278583375,
+            "text_color": 4294967295
+        },
+        {
+            "image_path": "assets/images/laptop.png",
+            "title": "UP TO\n20% OFF",
+            "category_name": "For Laptops\n& Mobiles",
+            "alignment": "start",
+            "btn_color": 4294967295,
+            "text_color": 4278583375
+        }
+    ]
+}

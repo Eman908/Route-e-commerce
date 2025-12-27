@@ -50,6 +50,17 @@ class AppTheme {
           color: colorScheme.onPrimary,
         ),
       ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          backgroundColor: AppColors.white,
+          foregroundColor: AppColors.darkBlue,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          padding: const EdgeInsets.all(16),
+          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+      ),
 
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: colorScheme.primary,

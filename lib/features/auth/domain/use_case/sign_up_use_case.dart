@@ -2,7 +2,9 @@ import 'package:e_commerce/core/errors/results.dart';
 import 'package:e_commerce/features/auth/data/models/login_request.dart';
 import 'package:e_commerce/features/auth/data/models/register_request.dart';
 import 'package:e_commerce/features/auth/domain/repo/auth_repo.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class SignUpUseCase {
   final AuthRepo _authRepo;
   SignUpUseCase(this._authRepo);

@@ -6,7 +6,7 @@ class MyBlocObserver extends BlocObserver {
   void onCreate(BlocBase bloc) {
     super.onCreate(bloc);
     if (kDebugMode) {
-      debugPrint('onCreate -- ${bloc.state}');
+      debugPrint('   Initial state: ${bloc.state}');
     }
   }
 
@@ -14,14 +14,35 @@ class MyBlocObserver extends BlocObserver {
   void onChange(BlocBase bloc, Change change) {
     super.onChange(bloc, change);
     if (kDebugMode) {
-      debugPrint('onChange -- ${bloc.runtimeType}, $change');
+      debugPrint('   From: ${change.currentState}');
+      debugPrint('   To:   ${change.nextState}');
+    }
+  }
+
+  @override
+  void onEvent(Bloc bloc, Object? event) {
+    super.onEvent(bloc, event);
+    if (kDebugMode) {
+      debugPrint('🎯 onEvent -- ${bloc.runtimeType}, Event: $event');
+    }
+  }
+
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    super.onTransition(bloc, transition);
+    if (kDebugMode) {
+      debugPrint('➡️ onTransition -- ${bloc.runtimeType}');
+      debugPrint('   Event: ${transition.event}');
+      debugPrint('   From: ${transition.currentState}');
+      debugPrint('   To: ${transition.nextState}');
     }
   }
 
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
     if (kDebugMode) {
-      debugPrint('onError -- ${bloc.runtimeType}, $error');
+      debugPrint('❌ onError -- ${bloc.runtimeType}');
+      debugPrint('   Error: $error');
     }
     super.onError(bloc, error, stackTrace);
   }
@@ -30,7 +51,7 @@ class MyBlocObserver extends BlocObserver {
   void onClose(BlocBase bloc) {
     super.onClose(bloc);
     if (kDebugMode) {
-      debugPrint('onClose -- ${bloc.runtimeType}');
+      debugPrint('🚪 onClose -- ${bloc.runtimeType} (hash: ${bloc.hashCode})');
     }
   }
 }

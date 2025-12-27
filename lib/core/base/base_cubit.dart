@@ -11,6 +11,10 @@ abstract class BaseCubit<T, A, NE> extends Cubit<T> {
 
   Stream<NE> get navigation => _navigationStream.stream;
 
+  void safeEmit(T state) {
+    if (!isClosed) emit(state);
+  }
+
   void emitNavigation(NE navigationEvent) {
     _navigationStream.add(navigationEvent);
   }

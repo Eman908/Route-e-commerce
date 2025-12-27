@@ -6,6 +6,12 @@ class BaseStatus<T> {
   final Status status;
   final Exception? exception;
 
+  const BaseStatus._()
+    : status = Status.initial,
+      data = null,
+      exception = null,
+      message = '';
+
   const BaseStatus.initial()
     : status = Status.initial,
       data = null,
@@ -20,4 +26,10 @@ class BaseStatus<T> {
   const BaseStatus.success({this.data, this.message})
     : status = Status.success,
       exception = null;
+
+  @override
+  String toString() {
+    final dataInfo = data != null ? 'data present' : 'no data';
+    return 'BaseStatus{status: $status, $dataInfo, message: "$message"}';
+  }
 }

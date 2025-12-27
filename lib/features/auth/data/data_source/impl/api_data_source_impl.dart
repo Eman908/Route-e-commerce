@@ -5,7 +5,9 @@ import 'package:e_commerce/features/auth/data/data_source/contract/api_data_sour
 import 'package:e_commerce/features/auth/data/models/auth_response/auth_response.dart';
 import 'package:e_commerce/features/auth/data/models/login_request.dart';
 import 'package:e_commerce/features/auth/data/models/register_request.dart';
+import 'package:injectable/injectable.dart';
 
+@Injectable(as: ApiDataSource)
 class ApiDataSourceImpl implements ApiDataSource {
   final ApiClient _apiClient;
   ApiDataSourceImpl(this._apiClient);
