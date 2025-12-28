@@ -41,6 +41,8 @@ import '../../features/commerce/data/datasource/impl/commerce_api_data_source_im
 import '../../features/commerce/data/mappers/commerce_mapper.dart' as _i660;
 import '../../features/commerce/data/repo/home_repo_impl.dart' as _i594;
 import '../../features/commerce/domain/repositry/home_repo.dart' as _i811;
+import '../../features/commerce/presentation/tabs/categories/cubit/categories_cubit.dart'
+    as _i854;
 import '../../features/commerce/presentation/tabs/home/cubit/home_cubit.dart'
     as _i791;
 import '../api%20manager/api_client.dart' as _i335;
@@ -66,6 +68,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i404.RegisterCubit>(() => _i404.RegisterCubit());
     gh.factory<_i660.CommerceMapper>(() => _i660.CommerceMapper());
     gh.factory<_i791.HomeCubit>(() => _i791.HomeCubit());
+    gh.factory<_i854.CategoriesCubit>(() => _i854.CategoriesCubit());
     gh.singleton<_i281.AssetBundle>(() => assetBundleModule.getAssetBundle());
     gh.singleton<_i361.Dio>(() => dioModule.dioProvider());
     gh.singleton<_i335.ApiClient>(() => _i335.ApiClient(gh<_i361.Dio>()));

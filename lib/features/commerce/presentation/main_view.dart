@@ -1,5 +1,7 @@
 import 'package:e_commerce/core/di/di.dart';
 import 'package:e_commerce/core/utils/context_extension.dart';
+import 'package:e_commerce/features/commerce/presentation/tabs/categories/categories_view.dart';
+import 'package:e_commerce/features/commerce/presentation/tabs/categories/cubit/categories_cubit.dart';
 import 'package:e_commerce/features/commerce/presentation/tabs/home/cubit/home_cubit.dart';
 import 'package:e_commerce/features/commerce/presentation/widgets/main_view_appbar.dart';
 import 'package:e_commerce/features/commerce/presentation/widgets/selected_icon.dart';
@@ -24,9 +26,9 @@ class _MainViewState extends State<MainView> {
 
   final List<Widget> _pages = [
     BlocProvider.value(value: getIt<HomeCubit>(), child: const HomeView()),
-    Container(
-      color: Colors.green,
-      child: const Center(child: Text('Dashboard')),
+    BlocProvider.value(
+      value: getIt<CategoriesCubit>(),
+      child: const CategoriesView(),
     ),
     Container(
       color: Colors.blue,
