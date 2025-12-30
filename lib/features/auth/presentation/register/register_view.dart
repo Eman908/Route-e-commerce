@@ -35,19 +35,23 @@ class _RegisterViewState extends State<RegisterView> {
       switch (navigationState) {
         case RegisterNavigationToLogin():
           {
-            Navigator.of(context).pushReplacementNamed(Routes.loginRoute);
+            if (mounted) {
+              Navigator.of(context).pushReplacementNamed(Routes.loginRoute);
+            }
           }
         case ShowScaffoldMessenger():
           {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  navigationState.message,
-                  style: context.textStyle.bodySmall,
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    navigationState.message,
+                    style: context.textStyle.bodySmall,
+                  ),
+                  backgroundColor: AppColors.white,
                 ),
-                backgroundColor: AppColors.white,
-              ),
-            );
+              );
+            }
           }
       }
     });

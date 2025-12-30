@@ -1,6 +1,6 @@
 import 'package:e_commerce/core/utils/context_extension.dart';
 import 'package:e_commerce/features/commerce/domain/entity/categories_entity.dart';
-import 'package:e_commerce/features/commerce/presentation/tabs/home/widgets/category_card.dart';
+import 'package:e_commerce/features/commerce/presentation/widgets/category_card.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesListBuilder extends StatelessWidget {

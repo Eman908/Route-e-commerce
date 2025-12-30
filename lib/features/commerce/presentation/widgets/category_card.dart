@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_commerce/core/routing/routes.dart';
 import 'package:e_commerce/core/utils/context_extension.dart';
 import 'package:e_commerce/features/commerce/domain/entity/categories_entity.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,9 @@ class CategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        //todo nav to products page
+        Navigator.of(
+          context,
+        ).pushNamed(Routes.productsRoute, arguments: categoriesEntity);
       },
       child: Column(
         spacing: 8,

@@ -50,4 +50,42 @@ class AuthRepoImpl implements AuthRepo {
         }
     }
   }
+
+  @override
+  Future<Results<String>> forgetPassword(String email) async {
+    var response = await _apiDataSource.forgetPassword(email);
+    switch (response) {
+      case Success<Map<String, dynamic>>():
+        return Success(
+          response.data?['message'] ?? 'Reset email sent successfully',
+        );
+
+      case Failure<Map<String, dynamic>>():
+        return Failure(message: response.message);
+    }
+  }
+
+  @override
+  Future<Results<String>> resetPassword(String email, String password) async {
+    var response = await _apiDataSource.resetPassword(email, password);
+    switch (response) {
+      case Success<Map<String, dynamic>>():
+        _localDateSource.saveToke(response.data?['token'] ?? '');
+        getIt<Dio>().options.headers["token"] = response.data?['token'] ?? "";
+        return Success('Updated Successfully');
+      case Failure<Map<String, dynamic>>():
+        return Failure(message: response.message);
+    }
+  }
+
+  @override
+  Future<Results<String>> verifyCode(String code) async {
+    var response = await _apiDataSource.verifyResetCode(code);
+    switch (response) {
+      case Success<Map<String, dynamic>>():
+        return Success(response.data?['status'] ?? 'Success');
+      case Failure<Map<String, dynamic>>():
+        return Failure(message: response.message);
+    }
+  }
 }

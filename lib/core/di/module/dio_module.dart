@@ -9,8 +9,15 @@ abstract class DioModule {
   @singleton
   Dio dioProvider() {
     Dio dio = Dio();
+    // SharedPreferences preferences = getIt();
+    // var token = preferences.getString(AppConstants.token);
+    // Map<String, dynamic> headers = {};
+    // if (token != null) {
+    //   headers["token"] = token;
+    // }
     dio.options = BaseOptions(
       baseUrl: ApiConstants.baseUrl,
+      //headers: headers,
       receiveTimeout: const Duration(seconds: 120),
       sendTimeout: const Duration(seconds: 120),
       connectTimeout: const Duration(seconds: 120),

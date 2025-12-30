@@ -27,6 +27,8 @@ import '../../features/auth/data/data_source/impl/local_data_source_impl.dart'
 import '../../features/auth/data/repo/auth_repo_impl.dart' as _i984;
 import '../../features/auth/domain/repo/auth_repo.dart' as _i170;
 import '../../features/auth/domain/use_case/sign_up_use_case.dart' as _i426;
+import '../../features/auth/presentation/forget_password/cubit/forget_password_process_cubit.dart'
+    as _i939;
 import '../../features/auth/presentation/login/cubit/login_cubit.dart' as _i179;
 import '../../features/auth/presentation/register/cubit/register_cubit.dart'
     as _i404;
@@ -34,13 +36,22 @@ import '../../features/commerce/data/datasource/contract/banners_local_data_sour
     as _i804;
 import '../../features/commerce/data/datasource/contract/commerce_api_data_source.dart'
     as _i608;
+import '../../features/commerce/data/datasource/contract/products_api_data_source.dart'
+    as _i89;
 import '../../features/commerce/data/datasource/impl/banners_local_data_source_impl.dart'
     as _i488;
 import '../../features/commerce/data/datasource/impl/commerce_api_data_source_impl.dart'
     as _i335;
+import '../../features/commerce/data/datasource/impl/products_api_data_source_impl.dart'
+    as _i405;
 import '../../features/commerce/data/mappers/commerce_mapper.dart' as _i660;
+import '../../features/commerce/data/mappers/products_mapper.dart' as _i192;
 import '../../features/commerce/data/repo/home_repo_impl.dart' as _i594;
+import '../../features/commerce/data/repo/products_repo_impl.dart' as _i1071;
 import '../../features/commerce/domain/repositry/home_repo.dart' as _i811;
+import '../../features/commerce/domain/repositry/products_repo.dart' as _i161;
+import '../../features/commerce/presentation/products/cubit/products_cubit.dart'
+    as _i374;
 import '../../features/commerce/presentation/tabs/categories/cubit/categories_cubit.dart'
     as _i854;
 import '../../features/commerce/presentation/tabs/home/cubit/home_cubit.dart'
@@ -64,13 +75,22 @@ extension GetItInjectableX on _i174.GetIt {
       () => sharedPreferenceModule.getPrefInstance(),
       preResolve: true,
     );
+    gh.factory<_i939.ForgetPasswordProcessCubit>(
+      () => _i939.ForgetPasswordProcessCubit(),
+    );
     gh.factory<_i179.LoginCubit>(() => _i179.LoginCubit());
     gh.factory<_i404.RegisterCubit>(() => _i404.RegisterCubit());
     gh.factory<_i660.CommerceMapper>(() => _i660.CommerceMapper());
-    gh.factory<_i791.HomeCubit>(() => _i791.HomeCubit());
+    gh.factory<_i192.ProductsMapper>(() => _i192.ProductsMapper());
+    gh.factory<_i374.ProductsCubit>(() => _i374.ProductsCubit());
     gh.factory<_i854.CategoriesCubit>(() => _i854.CategoriesCubit());
+    gh.factory<_i791.HomeCubit>(() => _i791.HomeCubit());
     gh.singleton<_i281.AssetBundle>(() => assetBundleModule.getAssetBundle());
     gh.singleton<_i361.Dio>(() => dioModule.dioProvider());
+    gh.factory<_i89.ProductsApiDataSource>(
+      () => _i405.ProductsApiDataSourceImpl(),
+    );
+    gh.factory<_i161.ProductsRepo>(() => _i1071.ProductsRepoImpl());
     gh.singleton<_i335.ApiClient>(() => _i335.ApiClient(gh<_i361.Dio>()));
     gh.factory<_i608.CommerceApiDataSource>(
       () => _i335.CommerceApiDataSourceImpl(),

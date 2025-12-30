@@ -1,11 +1,17 @@
 import 'package:e_commerce/core/di/di.dart';
 import 'package:e_commerce/core/routing/routes.dart';
+import 'package:e_commerce/features/auth/presentation/forget_password/cubit/forget_password_process_cubit.dart';
 import 'package:e_commerce/features/auth/presentation/forget_password/forget_password_view.dart';
+import 'package:e_commerce/features/auth/presentation/forget_password/reset_password_view.dart';
+import 'package:e_commerce/features/auth/presentation/forget_password/verification_view.dart';
 import 'package:e_commerce/features/auth/presentation/login/cubit/login_cubit.dart';
 import 'package:e_commerce/features/auth/presentation/login/login_view.dart';
 import 'package:e_commerce/features/auth/presentation/register/cubit/register_cubit.dart';
 import 'package:e_commerce/features/auth/presentation/register/register_view.dart';
+import 'package:e_commerce/features/commerce/domain/entity/categories_entity.dart';
 import 'package:e_commerce/features/commerce/presentation/main_view.dart';
+import 'package:e_commerce/features/commerce/presentation/products/cubit/products_cubit.dart';
+import 'package:e_commerce/features/commerce/presentation/products/products_view.dart';
 import 'package:e_commerce/not_found_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +34,16 @@ abstract class AppRouter {
             child: const LoginView(),
           ),
         );
+      case Routes.productsRoute:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<ProductsCubit>(),
+            child: ProductsView(
+              categoriesEntity: settings.arguments as CategoriesEntity,
+            ),
+          ),
+        );
       case Routes.registerRoute:
         return MaterialPageRoute(
           settings: settings,
@@ -45,8 +61,26 @@ abstract class AppRouter {
       case Routes.forgetRoute:
         return MaterialPageRoute(
           settings: settings,
-          builder: (context) =>
-              ForgetPasswordView(email: settings.arguments as String),
+          builder: (context) => BlocProvider(
+            create: (context) => getIt<ForgetPasswordProcessCubit>(),
+            child: const ForgetPasswordView(),
+          ),
+        );
+      case Routes.verificationRoute:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => BlocProvider(
+            create: (context) => getIt<ForgetPasswordProcessCubit>(),
+            child: VerificationView(email: settings.arguments as String),
+          ),
+        );
+      case Routes.resetPasswordRoute:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => BlocProvider(
+            create: (context) => getIt<ForgetPasswordProcessCubit>(),
+            child: ResetPasswordView(email: settings.arguments as String),
+          ),
         );
       default:
         return MaterialPageRoute(

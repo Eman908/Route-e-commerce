@@ -85,5 +85,4 @@ class CategoriesSectionBuilder extends StatelessWidget {
       },
     );
   }
-
 }

@@ -33,23 +33,31 @@ class _LoginViewState extends State<LoginView> {
       switch (navEvent) {
         case LoginNavigationToHome():
           {
-            Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+            if (mounted) {
+              Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+            }
           }
 
         case LoginShowScaffoldMessage():
           {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  navEvent.message,
-                  style: context.textStyle.bodySmall,
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    navEvent.message,
+                    style: context.textStyle.bodySmall,
+                  ),
+                  backgroundColor: AppColors.white,
                 ),
-                backgroundColor: AppColors.white,
-              ),
-            );
+              );
+            }
           }
         case LoginNavigationToRegister():
-          Navigator.of(context).pushNamed(Routes.registerRoute);
+          {
+            if (mounted) {
+              Navigator.of(context).pushNamed(Routes.registerRoute);
+            }
+          }
       }
     });
   }
@@ -133,12 +141,7 @@ class _LoginViewState extends State<LoginView> {
                     ),
                     TextButton(
                       onPressed: () {
-                        // Navigator.of(
-                        //   context,
-                        // ).pushNamed(Routes.forgetRoute, arguments: email.text);
-                        // ScaffoldMessenger.of(context).showSnackBar(
-                        //   const SnackBar(content: Text('code sent to ur email')),
-                        // );
+                        Navigator.of(context).pushNamed(Routes.forgetRoute);
                       },
                       child: Align(
                         alignment: AlignmentGeometry.centerRight,

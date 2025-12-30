@@ -2,9 +2,10 @@ import 'package:e_commerce/core/base/base_status.dart';
 import 'package:e_commerce/core/theme/app_colors.dart';
 import 'package:e_commerce/features/commerce/presentation/tabs/categories/cubit/categories_cubit.dart';
 import 'package:e_commerce/features/commerce/presentation/tabs/categories/cubit/categories_state.dart';
-import 'package:e_commerce/features/commerce/presentation/tabs/home/widgets/category_card.dart';
+import 'package:e_commerce/features/commerce/presentation/widgets/category_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 
 class CategoriesView extends StatefulWidget {
   const CategoriesView({super.key});
@@ -30,8 +31,23 @@ class _CategoriesViewState extends State<CategoriesView> {
         final status = state.categoriesStatus?.status;
 
         if (status == Status.loading) {
-          return const SizedBox(
-            child: Center(child: CircularProgressIndicator()),
+          return Shimmer(
+            child: GridView.builder(
+              padding: const EdgeInsets.all(16),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisSpacing: 40,
+                crossAxisSpacing: 16,
+                childAspectRatio: 0.75,
+              ),
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                return CircleAvatar(
+                  radius: 40,
+                  backgroundColor: AppColors.grey.withAlpha(10),
+                );
+              },
+            ),
           );
         }
 

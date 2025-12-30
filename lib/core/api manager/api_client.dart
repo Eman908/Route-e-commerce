@@ -3,10 +3,11 @@ import 'package:e_commerce/core/constants/api_constants.dart';
 import 'package:e_commerce/features/auth/data/models/auth_response/auth_response.dart';
 import 'package:e_commerce/features/auth/data/models/login_request.dart';
 import 'package:e_commerce/features/auth/data/models/register_request.dart';
+import 'package:e_commerce/features/commerce/data/models/add_to_fav.dart';
 import 'package:e_commerce/features/commerce/data/models/categories_response/categories_response.dart';
+import 'package:e_commerce/features/commerce/data/models/products_dto/products_dto.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
-
 part 'api_client.g.dart';
 
 @singleton
@@ -24,12 +25,24 @@ abstract class ApiClient {
   @GET(ApiConstants.getAllCategories)
   Future<CategoriesResponse> getAllCategories();
 
-  // @POST(ApiConstants.forgetPassword)
-  // Future<String> forgetPassword(@Body() String email);
+  @GET(ApiConstants.getAllProducts)
+  Future<ProductsDto> getAllProducts(
+    @Query('limit') int limit,
+    @Query("page") int page,
+    @Query("category[in]") String categoryId,
+  );
 
-  // @POST(ApiConstants.verifyRestCode)
-  // Future<String> verifyCode(@Body() String code);
+  @POST(ApiConstants.addProductToWishlist)
+  Future<AddToFav> addProductToFav(@Body() String productId);
 
-  // @PUT(ApiConstants.resetPassword)
-  // Future<String> resetPassword(@Body() String newPassword);
+  @POST(ApiConstants.forgetPassword)
+  Future<Map<String, dynamic>> forgetPassword(
+    @Body() Map<String, dynamic> email,
+  );
+
+  @POST(ApiConstants.verifyRestCode)
+  Future<Map<String, dynamic>> verifyCode(@Body() Map<String, dynamic> code);
+
+  @PUT(ApiConstants.resetPassword)
+  Future<Map<String, dynamic>> resetPassword(@Body() Map<String, dynamic> body);
 }

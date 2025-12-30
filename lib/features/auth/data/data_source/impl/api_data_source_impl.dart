@@ -34,4 +34,48 @@ class ApiDataSourceImpl implements ApiDataSource {
       return Success(response);
     });
   }
+
+  @override
+  Future<Results<Map<String, dynamic>>> forgetPassword(String email) async {
+    return safeCall(() async {
+      var response = await _apiClient.forgetPassword({'email': email});
+      if (response['statusMsg'] == 'success' ||
+          response['status'] == 'success') {
+        return Success(response);
+      }
+
+      return Failure(
+        message: response['message'] ?? 'Failed to send reset email',
+        exception: Exception(response['message']),
+      );
+    });
+  }
+
+  @override
+  Future<Results<Map<String, dynamic>>> resetPassword(
+    String email,
+    String password,
+  ) async {
+    return safeCall(() async {
+      var response = await _apiClient.resetPassword({
+        'email': email,
+        'newPassword': password,
+      });
+      if (response['statusMsg'] == 'fail') {
+        return Failure(message: response['message']);
+      }
+      return Success(response);
+    });
+  }
+
+  @override
+  Future<Results<Map<String, dynamic>>> verifyResetCode(String code) async {
+    return safeCall(() async {
+      var response = await _apiClient.verifyCode({"resetCode": code});
+      if (response['status'] == 'Success') {
+        return Success(response);
+      }
+      return Failure(message: response['message']);
+    });
+  }
 }

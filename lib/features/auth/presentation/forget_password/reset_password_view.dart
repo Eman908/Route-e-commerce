@@ -11,17 +11,18 @@ import 'package:e_commerce/features/auth/presentation/widgets/custom_text_field.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ForgetPasswordView extends StatefulWidget {
-  const ForgetPasswordView({super.key});
-
+class ResetPasswordView extends StatefulWidget {
+  const ResetPasswordView({super.key, required this.email});
+  final String email;
   @override
-  State<ForgetPasswordView> createState() => _ForgetPasswordViewState();
+  State<ResetPasswordView> createState() => _ResetPasswordViewState();
 }
 
-class _ForgetPasswordViewState extends State<ForgetPasswordView> {
-  late ForgetPasswordProcessCubit cubit;
-  TextEditingController email = TextEditingController();
+class _ResetPasswordViewState extends State<ResetPasswordView> {
+  TextEditingController password = TextEditingController();
+  TextEditingController confirmPassword = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey();
+  late ForgetPasswordProcessCubit cubit;
   @override
   void initState() {
     // TODO: implement initState
@@ -31,7 +32,8 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
 
   @override
   void dispose() {
-    email.dispose();
+    password.dispose();
+    confirmPassword.dispose();
     cubit.close();
     super.dispose();
   }
@@ -44,13 +46,37 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
         backgroundColor: Colors.transparent,
         centerTitle: true,
         title: const Text(
-          'Forget Password',
+          'Reset Password',
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body:
           BlocConsumer<ForgetPasswordProcessCubit, ForgetPasswordProcessState>(
+            listener: (context, state) {
+              if (state.resetPassword.status == Status.failure) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: AppColors.red,
+                    content: Text(
+                      state.resetPassword.message ?? 'Something Went Wrong',
+                    ),
+                  ),
+                );
+              } else if (state.resetPassword.status == Status.success) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: AppColors.white,
+                    content: Text(
+                      state.resetPassword.message ??
+                          'Password Rest Successfully',
+                      style: const TextStyle(color: AppColors.darkBlue),
+                    ),
+                  ),
+                );
+                Navigator.pushNamed(context, Routes.loginRoute);
+              }
+            },
             builder: (context, state) {
               return SafeArea(
                 child: Form(
@@ -60,7 +86,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                     children: [
                       32.heightSpace,
                       Text(
-                        'Enter Your Email Address To Receive Verification Code',
+                        'Enter Your New Password',
                         style: context.textStyle.titleLarge!.copyWith(
                           color: AppColors.white,
                           fontWeight: FontWeight.bold,
@@ -69,60 +95,47 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                       ),
                       40.heightSpace,
                       CustomTextFormField(
-                        controller: email,
-                        hintText: 'E-mail',
-                        prefix: Icons.email,
-                        keyboardType: TextInputType.emailAddress,
+                        controller: password,
+                        hintText: 'New Password',
+                        prefix: Icons.lock,
                         validator: (value) {
-                          return Validation.validateEmail(value);
+                          return Validation.validatePassword(value);
                         },
+                        keyboardType: TextInputType.visiblePassword,
+                      ),
+                      24.heightSpace,
+                      CustomTextFormField(
+                        controller: confirmPassword,
+                        hintText: 'Confirm Password',
+                        prefix: Icons.lock,
+                        validator: (value) {
+                          return Validation.validatePasswordConfirmation(
+                            password.text,
+                            confirmPassword.text,
+                          );
+                        },
+                        keyboardType: TextInputType.visiblePassword,
                       ),
                       32.heightSpace,
                       SizedBox(
                         width: double.infinity,
                         child: FilledButton(
-                          onPressed: () async {
+                          onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              await cubit.doAction(SendCode(email.text));
+                              cubit.doAction(
+                                ResetPassword(widget.email, password.text),
+                              );
                             }
                           },
-                          child: state.forgetPassword.status == Status.loading
+                          child: state.resetPassword.status == Status.loading
                               ? const CircularProgressIndicator()
-                              : const Text('Send Code'),
+                              : const Text('Reset Password'),
                         ),
                       ),
                     ],
                   ),
                 ).horizontalPadding(16),
               );
-            },
-            listener: (BuildContext context, ForgetPasswordProcessState state) {
-              if (state.forgetPassword.status == Status.failure) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    backgroundColor: AppColors.red,
-                    content: Text(
-                      state.forgetPassword.message ?? 'Something Went Wrong',
-                    ),
-                  ),
-                );
-              } else if (state.forgetPassword.status == Status.success) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    backgroundColor: AppColors.white,
-                    content: Text(
-                      state.forgetPassword.message ??
-                          'Verification Code Send Successfully',
-                      style: const TextStyle(color: AppColors.darkBlue),
-                    ),
-                  ),
-                );
-                Navigator.pushNamed(
-                  context,
-                  Routes.verificationRoute,
-                  arguments: email.text,
-                );
-              }
             },
           ),
     );
