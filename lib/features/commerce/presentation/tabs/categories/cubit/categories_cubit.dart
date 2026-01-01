@@ -3,7 +3,7 @@ import 'package:e_commerce/core/base/base_status.dart';
 import 'package:e_commerce/core/di/di.dart';
 import 'package:e_commerce/core/errors/results.dart';
 import 'package:e_commerce/features/commerce/domain/entity/categories_entity.dart';
-import 'package:e_commerce/features/commerce/domain/repositry/home_repo.dart';
+import 'package:e_commerce/features/commerce/domain/repositry/commerce_repo.dart';
 import 'package:e_commerce/features/commerce/presentation/tabs/categories/cubit/categories_state.dart';
 import 'package:injectable/injectable.dart';
 
@@ -11,7 +11,7 @@ import 'package:injectable/injectable.dart';
 class CategoriesCubit
     extends BaseCubit<CategoriesState, CategoriesActions, void> {
   CategoriesCubit() : super(CategoriesState());
-  final HomeRepo _homeRepo = getIt();
+  final CommerceRepo _homeRepo = getIt();
   @override
   Future<void> doAction(CategoriesActions action) async {
     switch (action) {

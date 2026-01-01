@@ -2,6 +2,7 @@ import 'package:e_commerce/core/base/base_cubit.dart';
 import 'package:e_commerce/core/base/base_status.dart';
 import 'package:e_commerce/core/di/di.dart';
 import 'package:e_commerce/core/errors/results.dart';
+import 'package:e_commerce/features/commerce/data/models/add_to_fav.dart';
 import 'package:e_commerce/features/commerce/domain/entity/pageable_product.dart';
 import 'package:e_commerce/features/commerce/domain/repositry/products_repo.dart';
 import 'package:e_commerce/features/commerce/presentation/products/cubit/products_state.dart';
@@ -18,25 +19,52 @@ class ProductsCubit extends BaseCubit<ProductsState, ProductsActions, void> {
     switch (action) {
       case LoadProducts():
         await _loadProducts(action.categoryId);
-      case AddToFav():
-        _addProductToFav(action.productID);
+      case AddProductToFav():
+        await _addProductToFav(action.productID);
+      case RemoveFromFav():
+        await _removeProductFromFav(action.productID);
     }
   }
 
-  Future<void> _addProductToFav(String productID) async {
-    var response = await _productsRepo.addProductToFav(productID);
+  Future<void> _removeProductFromFav(String productId) async {
+    var response = await _productsRepo.removeProductToFav(productId);
     switch (response) {
-      case Success<String>():
-        print("--------------------");
-        if (state.isFav = false) {
-          safeEmit(state.copyWith(isFav: true));
-        }
-        safeEmit(state.copyWith(isFav: false));
-        safeEmit(state.copyWith(fav: BaseStatus.success(data: response.data)));
-      case Failure<String>():
-        print("+++++++++++++++++");
+      case Success<AddToFav>():
+        // Get current favorite IDs from the API response
+        final currentFavorites = response.data?.data ?? [];
+
+        // Also remove the clicked product ID
+        final newFavorites = List<String>.from(currentFavorites)
+          ..removeWhere((id) => id == productId);
+
         safeEmit(
-          state.copyWith(fav: BaseStatus.failure(message: response.message)),
+          state.copyWith(favoriteIds: BaseStatus.success(data: newFavorites)),
+        );
+
+      case Failure<AddToFav>():
+        safeEmit(
+          state.copyWith(
+            favoriteIds: BaseStatus.failure(message: response.message),
+          ),
+        );
+    }
+  }
+
+  Future<void> _addProductToFav(String productId) async {
+    var response = await _productsRepo.addProductToFav(productId);
+    switch (response) {
+      case Success<AddToFav>():
+        // Get favorite IDs from the API response
+        final favoriteIds = response.data?.data ?? [];
+        safeEmit(
+          state.copyWith(favoriteIds: BaseStatus.success(data: favoriteIds)),
+        );
+
+      case Failure<AddToFav>():
+        safeEmit(
+          state.copyWith(
+            favoriteIds: BaseStatus.failure(message: response.message),
+          ),
         );
     }
   }

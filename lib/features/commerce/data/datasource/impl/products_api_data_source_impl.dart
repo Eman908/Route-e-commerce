@@ -28,7 +28,18 @@ class ProductsApiDataSourceImpl implements ProductsApiDataSource {
   @override
   Future<Results<AddToFav>> addProductToFav(String productId) async {
     return safeCall(() async {
-      var response = await _apiClient.addProductToFav(productId);
+      var response = await _apiClient.addProductToFav({"productId": productId});
+      if (response.data == null || response.data!.isEmpty) {
+        return Failure(message: 'something went wrong');
+      }
+      return Success(response);
+    });
+  }
+
+  @override
+  Future<Results<AddToFav>> removeProductToFav(String productId) async {
+    return safeCall(() async {
+      var response = await _apiClient.removeProductFromFav(productId);
       if (response.data == null || response.data!.isEmpty) {
         return Failure(message: 'something went wrong');
       }

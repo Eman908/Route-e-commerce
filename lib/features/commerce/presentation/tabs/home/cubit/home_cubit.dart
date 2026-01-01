@@ -4,14 +4,14 @@ import 'package:e_commerce/core/di/di.dart';
 import 'package:e_commerce/core/errors/results.dart';
 import 'package:e_commerce/features/commerce/domain/entity/banner_entity.dart';
 import 'package:e_commerce/features/commerce/domain/entity/categories_entity.dart';
-import 'package:e_commerce/features/commerce/domain/repositry/home_repo.dart';
+import 'package:e_commerce/features/commerce/domain/repositry/commerce_repo.dart';
 import 'package:e_commerce/features/commerce/presentation/tabs/home/cubit/home_state.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
 class HomeCubit extends BaseCubit<HomeState, HomeActions, void> {
   HomeCubit() : super(HomeState());
-  final HomeRepo _homeRepo = getIt();
+  final CommerceRepo _homeRepo = getIt();
   @override
   Future<void> doAction(HomeActions action) async {
     switch (action) {

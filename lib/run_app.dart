@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:e_commerce/core/routing/app_routes.dart';
 import 'package:e_commerce/core/routing/routes.dart';
 import 'package:e_commerce/core/theme/app_theme.dart';
@@ -9,6 +10,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
+
       theme: AppTheme.getLightThemeData(),
       themeMode: ThemeMode.light,
       onGenerateRoute: AppRouter.generateRoute,

@@ -1,5 +1,4 @@
 import 'package:e_commerce/features/commerce/domain/entity/products_entity.dart';
-import 'package:e_commerce/features/commerce/presentation/products/cubit/products_cubit.dart';
 import 'package:e_commerce/features/commerce/presentation/products/cubit/products_state.dart';
 import 'package:e_commerce/features/commerce/presentation/products/widgets/product_card.dart';
 import 'package:flutter/material.dart';
@@ -10,12 +9,10 @@ class ProductsCardBuilding extends StatelessWidget {
     required this.productsEntity,
     this.controller,
     required this.state,
-    required this.cubit,
   });
   final List<ProductsEntity> productsEntity;
   final ScrollController? controller;
   final ProductsState state;
-  final ProductsCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +30,7 @@ class ProductsCardBuilding extends StatelessWidget {
         if (index >= state.products.data!.length) {
           return const Center(child: CircularProgressIndicator());
         }
-        return ProductCard(productsEntity: productsEntity[index], cubit: cubit);
+        return ProductCard(productsEntity: productsEntity[index]);
       },
     );
   }

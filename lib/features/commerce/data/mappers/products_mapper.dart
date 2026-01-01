@@ -6,7 +6,7 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class ProductsMapper {
-  List<ProductsEntity> _mapProductsList(List<Datum> products) {
+  List<ProductsEntity> mapProductsList(List<Datum> products) {
     var result = products.map((e) => _mapProductsToProductsEntity(e)).toList();
     return result;
   }
@@ -32,7 +32,7 @@ class ProductsMapper {
   PageableProducts mapPageableProductsResponseToEntity(ProductsDto? response) {
     var currentPage = (response?.metadata?.currentPage ?? 1).toInt();
     var numberOfPages = (response?.metadata?.numberOfPages ?? 1).toInt();
-    var products = _mapProductsList(response?.data ?? []);
+    var products = mapProductsList(response?.data ?? []);
     return PageableProducts(currentPage, numberOfPages, products);
   }
 }

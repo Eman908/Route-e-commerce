@@ -8,7 +8,10 @@ class AddToFav {
   factory AddToFav.fromJson(Map<String, dynamic> json) => AddToFav(
     status: json['status'] as String?,
     message: json['message'] as String?,
-    data: json['data'] as List<String>?,
+    data: (json['data'] as List?)?.map((e) {
+      if (e is String) return e;
+      return e.toString();
+    }).toList(),
   );
 
   Map<String, dynamic> toJson() => {

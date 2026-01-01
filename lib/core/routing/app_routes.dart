@@ -9,8 +9,10 @@ import 'package:e_commerce/features/auth/presentation/login/login_view.dart';
 import 'package:e_commerce/features/auth/presentation/register/cubit/register_cubit.dart';
 import 'package:e_commerce/features/auth/presentation/register/register_view.dart';
 import 'package:e_commerce/features/commerce/domain/entity/categories_entity.dart';
+import 'package:e_commerce/features/commerce/domain/entity/products_entity.dart';
 import 'package:e_commerce/features/commerce/presentation/main_view.dart';
 import 'package:e_commerce/features/commerce/presentation/products/cubit/products_cubit.dart';
+import 'package:e_commerce/features/commerce/presentation/products/product_detail_view.dart';
 import 'package:e_commerce/features/commerce/presentation/products/products_view.dart';
 import 'package:e_commerce/not_found_view.dart';
 import 'package:flutter/foundation.dart';
@@ -82,6 +84,14 @@ abstract class AppRouter {
             child: ResetPasswordView(email: settings.arguments as String),
           ),
         );
+      case Routes.productDetailRoute:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => ProductDetailView(
+            productsEntity: settings.arguments as ProductsEntity,
+          ),
+        );
+
       default:
         return MaterialPageRoute(
           settings: settings,

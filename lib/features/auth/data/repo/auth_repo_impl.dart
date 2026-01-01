@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:e_commerce/core/constants/app_constants.dart';
 import 'package:e_commerce/core/di/di.dart';
 import 'package:e_commerce/core/errors/results.dart';
 import 'package:e_commerce/features/auth/data/data_source/contract/api_data_source.dart';
@@ -8,6 +9,7 @@ import 'package:e_commerce/features/auth/data/models/login_request.dart';
 import 'package:e_commerce/features/auth/data/models/register_request.dart';
 import 'package:e_commerce/features/auth/domain/repo/auth_repo.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @Injectable(as: AuthRepo)
 class AuthRepoImpl implements AuthRepo {
@@ -70,8 +72,8 @@ class AuthRepoImpl implements AuthRepo {
     var response = await _apiDataSource.resetPassword(email, password);
     switch (response) {
       case Success<Map<String, dynamic>>():
-        _localDateSource.saveToke(response.data?['token'] ?? '');
-        getIt<Dio>().options.headers["token"] = response.data?['token'] ?? "";
+        SharedPreferences preferences = getIt();
+        preferences.setString(AppConstants.token, '');
         return Success('Updated Successfully');
       case Failure<Map<String, dynamic>>():
         return Failure(message: response.message);

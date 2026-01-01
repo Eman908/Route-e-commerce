@@ -35,12 +35,23 @@ class ProductsRepoImpl implements ProductsRepo {
   }
 
   @override
-  Future<Results<String>> addProductToFav(String productId) async {
+  Future<Results<AddToFav>> addProductToFav(String productId) async {
     var response = await _productsApiDataSource.addProductToFav(productId);
     switch (response) {
       case Success<AddToFav>():
         // response.data = 'Product Added Successfully';
-        return Success(response.data?.message);
+        return Success(response.data);
+      case Failure<AddToFav>():
+        return Failure(message: response.message);
+    }
+  }
+
+  @override
+  Future<Results<AddToFav>> removeProductToFav(String productId) async {
+    var response = await _productsApiDataSource.removeProductToFav(productId);
+    switch (response) {
+      case Success<AddToFav>():
+        return Success(response.data);
       case Failure<AddToFav>():
         return Failure(message: response.message);
     }

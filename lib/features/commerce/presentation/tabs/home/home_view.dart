@@ -25,14 +25,16 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return const CustomScrollView(
-      slivers: [
-        // Banners Section - Handles its own loading/error states
-        SliverToBoxAdapter(child: BannerSectionBuilder()),
-        SliverToBoxAdapter(child: SizedBox(height: 24)),
-        // Categories Section - Handles its own loading/error states
-        SliverToBoxAdapter(child: CategoriesSection()),
-      ],
+    return const SafeArea(
+      child: CustomScrollView(
+        slivers: [
+          // Banners Section - Handles its own loading/error states
+          SliverToBoxAdapter(child: BannerSectionBuilder()),
+          SliverToBoxAdapter(child: SizedBox(height: 24)),
+          // Categories Section - Handles its own loading/error states
+          SliverToBoxAdapter(child: CategoriesSection()),
+        ],
+      ),
     );
   }
 }

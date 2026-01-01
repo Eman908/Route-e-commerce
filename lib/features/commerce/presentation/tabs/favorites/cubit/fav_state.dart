@@ -1,13 +1,13 @@
-// class FavState {
-//   bool isFav;
-//   FavState({this.isFav =false})
+import 'package:e_commerce/core/base/base_status.dart';
+import 'package:e_commerce/features/commerce/domain/entity/products_entity.dart';
 
-// FavState copyWith(bool? isFav){
-//   return FavState(isFav: isFav??this.isFav);
-// }
-//   // FavState copyWith({bool? isFav}) {
-//   //   return FavState(isFav: isFav??this.isFav);
-//   // }
-// }
+class FavState {
+  BaseStatus<List<ProductsEntity>> favList;
+  FavState({this.favList = const BaseStatus.initial()});
+  FavState copyWith({BaseStatus<List<ProductsEntity>>? favList}) {
+    return FavState(favList: favList ?? this.favList);
+  }
+}
 
-// //final class FavInitial extends FavState {}
+sealed class FavListActions{}
+final class LoadAllFavList extends FavListActions{}

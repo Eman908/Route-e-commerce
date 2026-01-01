@@ -136,16 +136,44 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<AddToFav> addProductToFav(String productId) async {
+  Future<AddToFav> addProductToFav(Map<String, dynamic> productId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = productId;
+    final _data = <String, dynamic>{};
+    _data.addAll(productId);
     final _options = _setStreamType<AddToFav>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
             '/api/v1/wishlist',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late AddToFav _value;
+    try {
+      _value = AddToFav.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<AddToFav> removeProductFromFav(String productId) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<AddToFav>(
+      Options(method: 'DELETE', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/wishlist/${productId}',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -182,7 +210,6 @@ class _ApiClient implements ApiClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-
     return _result.data!;
   }
 
@@ -212,7 +239,8 @@ class _ApiClient implements ApiClient {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = body; // FIX: Use the 'body' parameter directly
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
     final _options = _setStreamType<Map<String, dynamic>>(
       Options(method: 'PUT', headers: _headers, extra: _extra)
           .compose(
@@ -225,6 +253,38 @@ class _ApiClient implements ApiClient {
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     return _result.data!;
+  }
+
+  @override
+  Future<List<Datum>> getWishList() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+
+    final _options = _setStreamType<Map<String, dynamic>>(
+      // Expect Map, not List
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/wishlist',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+
+    // Extract the data array from the response
+    final dataList = _result.data!['data'] as List<dynamic>;
+
+    // Convert each item to Datum
+    final value = dataList
+        .map((dynamic i) => Datum.fromJson(i as Map<String, dynamic>))
+        .toList();
+
+    return value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

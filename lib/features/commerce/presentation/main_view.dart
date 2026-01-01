@@ -2,6 +2,8 @@ import 'package:e_commerce/core/di/di.dart';
 import 'package:e_commerce/core/utils/context_extension.dart';
 import 'package:e_commerce/features/commerce/presentation/tabs/categories/categories_view.dart';
 import 'package:e_commerce/features/commerce/presentation/tabs/categories/cubit/categories_cubit.dart';
+import 'package:e_commerce/features/commerce/presentation/tabs/favorites/cubit/fav_cubit.dart';
+import 'package:e_commerce/features/commerce/presentation/tabs/favorites/favorite_view.dart';
 import 'package:e_commerce/features/commerce/presentation/tabs/home/cubit/home_cubit.dart';
 import 'package:e_commerce/features/commerce/presentation/widgets/main_view_appbar.dart';
 import 'package:e_commerce/features/commerce/presentation/widgets/selected_icon.dart';
@@ -30,10 +32,7 @@ class _MainViewState extends State<MainView> {
       value: getIt<CategoriesCubit>(),
       child: const CategoriesView(),
     ),
-    Container(
-      color: Colors.blue,
-      child: const Center(child: Text('Favorites')),
-    ),
+    BlocProvider.value(value: getIt<FavCubit>(), child: const FavoriteView()),
     Container(
       color: Colors.orange,
       child: const Center(child: Text('Profile')),

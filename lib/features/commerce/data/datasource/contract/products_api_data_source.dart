@@ -10,4 +10,5 @@ abstract interface class ProductsApiDataSource {
     String categoryId,
   );
   Future<Results<AddToFav>> addProductToFav(String productId);
+  Future<Results<AddToFav>> removeProductToFav(String productId);
 }

@@ -46,14 +46,16 @@ import '../../features/commerce/data/datasource/impl/products_api_data_source_im
     as _i405;
 import '../../features/commerce/data/mappers/commerce_mapper.dart' as _i660;
 import '../../features/commerce/data/mappers/products_mapper.dart' as _i192;
-import '../../features/commerce/data/repo/home_repo_impl.dart' as _i594;
+import '../../features/commerce/data/repo/commerce_repo_impl.dart' as _i594;
 import '../../features/commerce/data/repo/products_repo_impl.dart' as _i1071;
-import '../../features/commerce/domain/repositry/home_repo.dart' as _i811;
+import '../../features/commerce/domain/repositry/commerce_repo.dart' as _i693;
 import '../../features/commerce/domain/repositry/products_repo.dart' as _i161;
 import '../../features/commerce/presentation/products/cubit/products_cubit.dart'
     as _i374;
 import '../../features/commerce/presentation/tabs/categories/cubit/categories_cubit.dart'
     as _i854;
+import '../../features/commerce/presentation/tabs/favorites/cubit/fav_cubit.dart'
+    as _i783;
 import '../../features/commerce/presentation/tabs/home/cubit/home_cubit.dart'
     as _i791;
 import '../api%20manager/api_client.dart' as _i335;
@@ -84,18 +86,19 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i192.ProductsMapper>(() => _i192.ProductsMapper());
     gh.factory<_i374.ProductsCubit>(() => _i374.ProductsCubit());
     gh.factory<_i854.CategoriesCubit>(() => _i854.CategoriesCubit());
+    gh.factory<_i783.FavCubit>(() => _i783.FavCubit());
     gh.factory<_i791.HomeCubit>(() => _i791.HomeCubit());
     gh.singleton<_i281.AssetBundle>(() => assetBundleModule.getAssetBundle());
     gh.singleton<_i361.Dio>(() => dioModule.dioProvider());
     gh.factory<_i89.ProductsApiDataSource>(
       () => _i405.ProductsApiDataSourceImpl(),
     );
+    gh.factory<_i693.CommerceRepo>(() => _i594.CommerceRepoImpl());
     gh.factory<_i161.ProductsRepo>(() => _i1071.ProductsRepoImpl());
     gh.singleton<_i335.ApiClient>(() => _i335.ApiClient(gh<_i361.Dio>()));
     gh.factory<_i608.CommerceApiDataSource>(
       () => _i335.CommerceApiDataSourceImpl(),
     );
-    gh.factory<_i811.HomeRepo>(() => _i594.HomeRepoImpl());
     gh.factory<_i804.BannersLocalDataSource>(
       () => _i488.BannersLocalDataSourceImpl(gh<_i409.AssetBundle>()),
     );

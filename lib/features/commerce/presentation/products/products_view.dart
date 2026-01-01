@@ -39,7 +39,6 @@ class _ProductsViewState extends State<ProductsView> {
 
   @override
   void dispose() {
-    cubit.close();
     controller.dispose();
     super.dispose();
   }
@@ -61,7 +60,6 @@ class _ProductsViewState extends State<ProductsView> {
                 productsEntity: products,
                 controller: controller,
                 state: state,
-                cubit: cubit,
               );
 
             case Status.failure:
