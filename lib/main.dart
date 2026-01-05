@@ -1,9 +1,7 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:e_commerce/core/constants/app_constants.dart';
 import 'package:e_commerce/core/di/di.dart';
 import 'package:e_commerce/core/utils/bloc_observer.dart';
 import 'package:e_commerce/run_app.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -17,10 +15,11 @@ void main() async {
   Bloc.observer = MyBlocObserver();
   SharedPreferences preferences = getIt();
   var token = preferences.getString(AppConstants.token);
-  runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) => MyApp(token: token),
-    ),
-  );
+  runApp(MyApp(token: token));
+  // runApp(
+  //   DevicePreview(
+  //     enabled: !kReleaseMode,
+  //     builder: (context) => MyApp(token: token),
+  //   ),
+  // );
 }

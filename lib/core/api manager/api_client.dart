@@ -7,6 +7,7 @@ import 'package:e_commerce/features/commerce/data/models/add_to_fav.dart';
 import 'package:e_commerce/features/commerce/data/models/categories_response/categories_response.dart';
 import 'package:e_commerce/features/commerce/data/models/products_dto/datum.dart';
 import 'package:e_commerce/features/commerce/data/models/products_dto/products_dto.dart';
+import 'package:e_commerce/features/orders/data/models/user_cart/user_cart.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 part 'api_client.g.dart';
@@ -52,4 +53,24 @@ abstract class ApiClient {
 
   @GET(ApiConstants.getWishList)
   Future<List<Datum>> getWishList();
+
+  @DELETE(ApiConstants.cart)
+  Future<Map<String, dynamic>> deleteAllCartItems();
+
+  @DELETE(ApiConstants.removeProductFromCart)
+  Future<UserCartResponse> deleteCartItems(@Path('id') String productId);
+
+  @GET(ApiConstants.cart)
+  Future<UserCartResponse> getAllCart();
+
+  @PUT(ApiConstants.updateCartProductQuantity)
+  Future<UserCartResponse> updateCartProductQuantity(
+    @Path('id') String productId,
+    @Body() Map<String, dynamic> count,
+  );
+
+  @POST(ApiConstants.cart)
+  Future<UserCartResponse> addProductToCart(
+    @Body() Map<String, dynamic> productId,
+  );
 }

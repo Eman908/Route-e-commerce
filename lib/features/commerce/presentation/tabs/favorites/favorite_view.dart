@@ -20,16 +20,13 @@ class _FavoriteViewState extends State<FavoriteView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      cubit = context.read<FavCubit>();
 
-      cubit.doAction(LoadAllFavList());
-    });
+    cubit = context.read<FavCubit>();
+    cubit.doAction(LoadAllFavList());
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 

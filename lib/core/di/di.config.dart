@@ -46,7 +46,7 @@ import '../../features/commerce/data/datasource/impl/products_api_data_source_im
     as _i405;
 import '../../features/commerce/data/mappers/commerce_mapper.dart' as _i660;
 import '../../features/commerce/data/mappers/products_mapper.dart' as _i192;
-import '../../features/commerce/data/repo/commerce_repo_impl.dart' as _i594;
+import '../../features/commerce/data/repo/commerce_repo_impl.dart' as _i861;
 import '../../features/commerce/data/repo/products_repo_impl.dart' as _i1071;
 import '../../features/commerce/domain/repositry/commerce_repo.dart' as _i693;
 import '../../features/commerce/domain/repositry/products_repo.dart' as _i161;
@@ -58,6 +58,14 @@ import '../../features/commerce/presentation/tabs/favorites/cubit/fav_cubit.dart
     as _i783;
 import '../../features/commerce/presentation/tabs/home/cubit/home_cubit.dart'
     as _i791;
+import '../../features/orders/data/data_source/contract/cart_api_data_source.dart'
+    as _i491;
+import '../../features/orders/data/data_source/impl/cart_api_data_source_impl.dart'
+    as _i197;
+import '../../features/orders/data/mapper/cart_mapper.dart' as _i318;
+import '../../features/orders/data/repo/cart_repo_imp.dart' as _i408;
+import '../../features/orders/domain/repo/cart_repo.dart' as _i0;
+import '../../features/orders/presentation/cubit/cart_cubit.dart' as _i855;
 import '../api%20manager/api_client.dart' as _i335;
 import 'module/asset_bundle_module.dart' as _i283;
 import 'module/dio_module.dart' as _i556;
@@ -88,17 +96,21 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i854.CategoriesCubit>(() => _i854.CategoriesCubit());
     gh.factory<_i783.FavCubit>(() => _i783.FavCubit());
     gh.factory<_i791.HomeCubit>(() => _i791.HomeCubit());
+    gh.factory<_i855.CartCubit>(() => _i855.CartCubit());
+    gh.factory<_i318.CartMapper>(() => _i318.CartMapper());
     gh.singleton<_i281.AssetBundle>(() => assetBundleModule.getAssetBundle());
     gh.singleton<_i361.Dio>(() => dioModule.dioProvider());
     gh.factory<_i89.ProductsApiDataSource>(
       () => _i405.ProductsApiDataSourceImpl(),
     );
-    gh.factory<_i693.CommerceRepo>(() => _i594.CommerceRepoImpl());
     gh.factory<_i161.ProductsRepo>(() => _i1071.ProductsRepoImpl());
+    gh.factory<_i693.CommerceRepo>(() => _i861.CommerceRepoImpl());
+    gh.factory<_i491.CartApiDataSource>(() => _i197.CartApiDataSourceImpl());
     gh.singleton<_i335.ApiClient>(() => _i335.ApiClient(gh<_i361.Dio>()));
     gh.factory<_i608.CommerceApiDataSource>(
       () => _i335.CommerceApiDataSourceImpl(),
     );
+    gh.factory<_i0.CartRepo>(() => _i408.CartRepoImp());
     gh.factory<_i804.BannersLocalDataSource>(
       () => _i488.BannersLocalDataSourceImpl(gh<_i409.AssetBundle>()),
     );

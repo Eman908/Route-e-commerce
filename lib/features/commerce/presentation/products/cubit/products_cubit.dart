@@ -4,6 +4,8 @@ import 'package:e_commerce/core/di/di.dart';
 import 'package:e_commerce/core/errors/results.dart';
 import 'package:e_commerce/features/commerce/data/models/add_to_fav.dart';
 import 'package:e_commerce/features/commerce/domain/entity/pageable_product.dart';
+import 'package:e_commerce/features/commerce/domain/entity/products_entity.dart';
+import 'package:e_commerce/features/commerce/domain/repositry/commerce_repo.dart';
 import 'package:e_commerce/features/commerce/domain/repositry/products_repo.dart';
 import 'package:e_commerce/features/commerce/presentation/products/cubit/products_state.dart';
 import 'package:injectable/injectable.dart';
@@ -13,7 +15,7 @@ class ProductsCubit extends BaseCubit<ProductsState, ProductsActions, void> {
   ProductsCubit() : super(ProductsState());
 
   final ProductsRepo _productsRepo = getIt();
-
+  final CommerceRepo _commerceRepo = getIt();
   @override
   Future<void> doAction(ProductsActions action) async {
     switch (action) {
@@ -23,6 +25,30 @@ class ProductsCubit extends BaseCubit<ProductsState, ProductsActions, void> {
         await _addProductToFav(action.productID);
       case RemoveFromFav():
         await _removeProductFromFav(action.productID);
+      case LoadFavorites():
+        _loadFavorites();
+    }
+  }
+
+  Future<void> _loadFavorites() async {
+    final response = await _commerceRepo.getWishList();
+
+    switch (response) {
+      case Success<List<ProductsEntity>>():
+        final ids =
+            response.data
+                ?.map((product) => product.id)
+                .whereType<String>()
+                .toList() ??
+            [];
+        safeEmit(state.copyWith(favoriteIds: BaseStatus.success(data: ids)));
+
+      case Failure<List<ProductsEntity>>():
+        safeEmit(
+          state.copyWith(
+            favoriteIds: BaseStatus.failure(message: response.message),
+          ),
+        );
     }
   }
 
@@ -30,15 +56,10 @@ class ProductsCubit extends BaseCubit<ProductsState, ProductsActions, void> {
     var response = await _productsRepo.removeProductToFav(productId);
     switch (response) {
       case Success<AddToFav>():
-        // Get current favorite IDs from the API response
-        final currentFavorites = response.data?.data ?? [];
-
-        // Also remove the clicked product ID
-        final newFavorites = List<String>.from(currentFavorites)
-          ..removeWhere((id) => id == productId);
-
         safeEmit(
-          state.copyWith(favoriteIds: BaseStatus.success(data: newFavorites)),
+          state.copyWith(
+            favoriteIds: BaseStatus.success(data: response.data?.data ?? []),
+          ),
         );
 
       case Failure<AddToFav>():
@@ -54,10 +75,10 @@ class ProductsCubit extends BaseCubit<ProductsState, ProductsActions, void> {
     var response = await _productsRepo.addProductToFav(productId);
     switch (response) {
       case Success<AddToFav>():
-        // Get favorite IDs from the API response
-        final favoriteIds = response.data?.data ?? [];
         safeEmit(
-          state.copyWith(favoriteIds: BaseStatus.success(data: favoriteIds)),
+          state.copyWith(
+            favoriteIds: BaseStatus.success(data: response.data?.data ?? []),
+          ),
         );
 
       case Failure<AddToFav>():
@@ -70,9 +91,9 @@ class ProductsCubit extends BaseCubit<ProductsState, ProductsActions, void> {
   }
 
   Future<void> _loadProducts(String categoryId) async {
-    if (state.page > state.numberOfPages) {
-      return;
-    }
+    // if (state.page > state.numberOfPages) {
+    //   return;
+    // }
 
     if (state.page == 1) {
       safeEmit(state.copyWith(products: const BaseStatus.loading()));
@@ -113,39 +134,4 @@ class ProductsCubit extends BaseCubit<ProductsState, ProductsActions, void> {
         }
     }
   }
-  //   if (state.isFetching || !state.hasMore) return;
-
-  //   safeEmit(
-  //     state.copyWith(isFetching: true, baseStatus: const BaseStatus.loading()),
-  //   );
-
-  //   final response = await _productsRepo.getAllProducts(
-  //     10,
-  //     state.currentPage,
-  //     categoryId,
-  //   );
-
-  //   switch (response) {
-  //     case Success<List<ProductsEntity>>():
-  //       final updatedList = List<ProductsEntity>.from(state.products);
-  //       updatedList.addAll(response.data ?? []);
-  //       safeEmit(
-  //         state.copyWith(
-  //           products: updatedList,
-  //           currentPage: state.currentPage + 1,
-  //           hasMore: response.data?.isNotEmpty,
-  //           isFetching: false,
-  //           baseStatus: BaseStatus.success(data: updatedList),
-  //         ),
-  //       );
-
-  //     case Failure<List<ProductsEntity>>():
-  //       safeEmit(
-  //         state.copyWith(
-  //           isFetching: false,
-  //           baseStatus: BaseStatus.failure(message: response.message),
-  //         ),
-  //       );
-  //   }
-  // }
 }

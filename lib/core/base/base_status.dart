@@ -6,12 +6,6 @@ class BaseStatus<T> {
   final Status status;
   final Exception? exception;
 
-  const BaseStatus._()
-    : status = Status.initial,
-      data = null,
-      exception = null,
-      message = '';
-
   const BaseStatus.initial()
     : status = Status.initial,
       data = null,

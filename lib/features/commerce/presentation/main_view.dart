@@ -1,4 +1,5 @@
 import 'package:e_commerce/core/di/di.dart';
+import 'package:e_commerce/core/routing/routes.dart';
 import 'package:e_commerce/core/utils/context_extension.dart';
 import 'package:e_commerce/features/commerce/presentation/tabs/categories/categories_view.dart';
 import 'package:e_commerce/features/commerce/presentation/tabs/categories/cubit/categories_cubit.dart';
@@ -45,7 +46,12 @@ class _MainViewState extends State<MainView> {
       valueListenable: currentIndex,
       builder: (context, value, child) {
         return Scaffold(
-          appBar: mainAppBar(value),
+          appBar: mainAppBar(
+            value,
+            onPressed: () {
+              Navigator.of(context).pushNamed(Routes.cartRoute);
+            },
+          ),
           body: _pages[value],
           bottomNavigationBar: ClipRRect(
             borderRadius: const BorderRadiusGeometry.only(

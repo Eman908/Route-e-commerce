@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-AppBar mainAppBar(int value) {
+AppBar mainAppBar(int value, {required void Function()? onPressed}) {
   return AppBar(
     title: Image.asset('assets/images/Group 5.png'),
     bottom: value == 3
@@ -8,14 +8,14 @@ AppBar mainAppBar(int value) {
             preferredSize: Size.fromHeight(0),
             child: SizedBox(),
           )
-        : const PreferredSize(
-            preferredSize: Size.fromHeight(56.0),
+        : PreferredSize(
+            preferredSize: const Size.fromHeight(56.0),
             child: Padding(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Row(
                 spacing: 16,
                 children: [
-                  Expanded(
+                  const Expanded(
                     child: TextField(
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
@@ -23,7 +23,10 @@ AppBar mainAppBar(int value) {
                       ),
                     ),
                   ),
-                  Icon(Icons.shopping_cart_outlined),
+                  IconButton(
+                    onPressed: onPressed,
+                    icon: const Icon(Icons.shopping_cart_outlined),
+                  ),
                 ],
               ),
             ),

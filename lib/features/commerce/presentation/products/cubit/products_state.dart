@@ -31,35 +31,7 @@ class ProductsState {
   bool isProductFavorite(String productId) {
     return favoriteIds.data?.contains(productId) ?? false;
   }
-} // final List<ProductsEntity> products;
-// final BaseStatus baseStatus;
-// final int currentPage;
-// final bool hasMore;
-// final bool isFetching;
-
-// ProductsState({
-//   this.products = const [],
-//   this.baseStatus = const BaseStatus.initial(),
-//   this.currentPage = 1,
-//   this.hasMore = true,
-//   this.isFetching = false,
-// });
-
-// ProductsState copyWith({
-//   List<ProductsEntity>? products,
-//   BaseStatus? baseStatus,
-//   int? currentPage,
-//   bool? hasMore,
-//   bool? isFetching,
-// }) {
-//   return ProductsState(
-//     products: products ?? this.products,
-//     baseStatus: baseStatus ?? this.baseStatus,
-//     currentPage: currentPage ?? this.currentPage,
-//     hasMore: hasMore ?? this.hasMore,
-//     isFetching: isFetching ?? this.isFetching,
-//   );
-// }
+}
 
 sealed class ProductsActions {}
 
@@ -67,6 +39,8 @@ final class LoadProducts extends ProductsActions {
   final String categoryId;
   LoadProducts(this.categoryId);
 }
+
+final class LoadFavorites extends ProductsActions {}
 
 final class AddProductToFav extends ProductsActions {
   final String productID;

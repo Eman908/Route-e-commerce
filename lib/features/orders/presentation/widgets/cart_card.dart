@@ -1,27 +1,23 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:e_commerce/core/routing/routes.dart';
 import 'package:e_commerce/core/theme/app_colors.dart';
 import 'package:e_commerce/core/utils/context_extension.dart';
-import 'package:e_commerce/features/commerce/domain/entity/products_entity.dart';
-import 'package:e_commerce/features/commerce/presentation/products/cubit/products_cubit.dart';
-import 'package:e_commerce/features/commerce/presentation/products/cubit/products_state.dart';
-import 'package:e_commerce/features/commerce/presentation/tabs/favorites/cubit/fav_cubit.dart';
-import 'package:e_commerce/features/commerce/presentation/tabs/favorites/cubit/fav_state.dart';
+import 'package:e_commerce/features/orders/domain/entity/cart_item_entity.dart';
+import 'package:e_commerce/features/orders/presentation/cubit/cart_cubit.dart';
+import 'package:e_commerce/features/orders/presentation/cubit/cart_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class FavoriteCard extends StatelessWidget {
-  const FavoriteCard({super.key, required this.productsEntity, this.onPressed});
-  final ProductsEntity productsEntity;
-  final void Function()? onPressed;
+class CartCard extends StatelessWidget {
+  const CartCard({super.key, required this.productsEntity});
+  final CartItemEntity productsEntity;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(
-          context,
-        ).pushNamed(Routes.productDetailRoute, arguments: productsEntity);
+        // Navigator.of(
+        //   context,
+        // ).pushNamed(Routes.productDetailRoute, arguments: productsEntity);
       },
       child: SizedBox(
         height: context.heightSize * .23,
@@ -69,7 +65,6 @@ class FavoriteCard extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      //const SizedBox(height: 4),
                       Row(
                         children: [
                           Text(
@@ -84,34 +79,11 @@ class FavoriteCard extends StatelessWidget {
                         ],
                       ),
 
-                      Row(
-                        spacing: 4,
-                        children: [
-                          Text(
-                            "EGP ${productsEntity.priceAfterDiscount?.toString() ?? '0'}",
-                            style: context.textStyle.labelLarge?.copyWith(
-                              color: AppColors.darkBlue,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                          Text(
-                            "EGP ${productsEntity.price?.toString() ?? '0'}",
-                            style: context.textStyle.labelMedium?.copyWith(
-                              color: productsEntity.priceAfterDiscount != null
-                                  ? Colors.grey
-                                  : AppColors.darkBlue,
-                              fontWeight:
-                                  productsEntity.priceAfterDiscount == null
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                              decoration:
-                                  productsEntity.priceAfterDiscount != null
-                                  ? TextDecoration.lineThrough
-                                  : null,
-                            ),
-                          ),
-                        ],
+                      Text(
+                        "EGP ${productsEntity.price?.toString() ?? '0'}",
+                        style: context.textStyle.labelMedium?.copyWith(
+                          color: AppColors.darkBlue,
+                        ),
                       ),
 
                       Row(
@@ -121,11 +93,10 @@ class FavoriteCard extends StatelessWidget {
                             fit: BoxFit.scaleDown,
                             child: IconButton(
                               onPressed: () {
-                                context.read<ProductsCubit>().doAction(
-                                  RemoveFromFav(productsEntity.id ?? ''),
-                                );
-                                context.read<FavCubit>().doAction(
-                                  LoadAllFavList(),
+                                context.read<CartCubit>().doAction(
+                                  DeleteProductFromCart(
+                                    productsEntity.id ?? '',
+                                  ),
                                 );
                               },
                               style: IconButton.styleFrom(
@@ -134,7 +105,7 @@ class FavoriteCard extends StatelessWidget {
                                 padding: EdgeInsets.zero,
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               ),
-                              icon: const Icon(Icons.favorite),
+                              icon: const Icon(Icons.delete_outline),
                             ),
                           ),
 

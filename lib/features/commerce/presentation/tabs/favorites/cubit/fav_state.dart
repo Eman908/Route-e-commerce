@@ -9,5 +9,6 @@ class FavState {
   }
 }
 
-sealed class FavListActions{}
-final class LoadAllFavList extends FavListActions{}
+sealed class FavListActions {}
+
+final class LoadAllFavList extends FavListActions {}

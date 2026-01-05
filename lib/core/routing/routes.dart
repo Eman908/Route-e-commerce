@@ -7,4 +7,5 @@ abstract class Routes {
   static const verificationRoute = 'verification';
   static const resetPasswordRoute = 'resetPass';
   static const productDetailRoute = 'detail';
+  static const cartRoute = 'cart';
 }

@@ -11,9 +11,9 @@ import 'package:e_commerce/features/auth/presentation/register/register_view.dar
 import 'package:e_commerce/features/commerce/domain/entity/categories_entity.dart';
 import 'package:e_commerce/features/commerce/domain/entity/products_entity.dart';
 import 'package:e_commerce/features/commerce/presentation/main_view.dart';
-import 'package:e_commerce/features/commerce/presentation/products/cubit/products_cubit.dart';
 import 'package:e_commerce/features/commerce/presentation/products/product_detail_view.dart';
 import 'package:e_commerce/features/commerce/presentation/products/products_view.dart';
+import 'package:e_commerce/features/orders/presentation/cart_view.dart';
 import 'package:e_commerce/not_found_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -39,11 +39,8 @@ abstract class AppRouter {
       case Routes.productsRoute:
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => BlocProvider(
-            create: (context) => getIt<ProductsCubit>(),
-            child: ProductsView(
-              categoriesEntity: settings.arguments as CategoriesEntity,
-            ),
+          builder: (_) => ProductsView(
+            categoriesEntity: settings.arguments as CategoriesEntity,
           ),
         );
       case Routes.registerRoute:
@@ -59,6 +56,11 @@ abstract class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (context) => const MainView(),
+        );
+      case Routes.cartRoute:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => const CartView(),
         );
       case Routes.forgetRoute:
         return MaterialPageRoute(

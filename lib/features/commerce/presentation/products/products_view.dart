@@ -5,6 +5,8 @@ import 'package:e_commerce/features/commerce/domain/entity/categories_entity.dar
 import 'package:e_commerce/features/commerce/presentation/products/cubit/products_cubit.dart';
 import 'package:e_commerce/features/commerce/presentation/products/cubit/products_state.dart';
 import 'package:e_commerce/features/commerce/presentation/products/widgets/products_card_building.dart';
+import 'package:e_commerce/features/orders/presentation/cubit/cart_cubit.dart';
+import 'package:e_commerce/features/orders/presentation/cubit/cart_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,22 +21,27 @@ class ProductsView extends StatefulWidget {
 class _ProductsViewState extends State<ProductsView> {
   late ScrollController controller;
   late ProductsCubit cubit;
+  late CartCubit cubit2;
   @override
   void initState() {
     super.initState();
     cubit = context.read<ProductsCubit>();
+    cubit2 = context.read<CartCubit>();
     controller = ScrollController();
+    cubit.doAction(LoadProducts(widget.categoriesEntity.id ?? ''));
+    cubit.doAction(LoadFavorites());
+    cubit2.doAction(LoadCartItems());
+    // controller.addListener(() {
+    //   if (controller.position.pixels >=
+    //       controller.position.maxScrollExtent - 200) {
 
-    controller.addListener(() {
-      if (controller.position.pixels >=
-          controller.position.maxScrollExtent - 200) {
-        cubit.doAction(LoadProducts(widget.categoriesEntity.id ?? ''));
-      }
-    });
+    //   }
+    // });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      cubit.doAction(LoadProducts(widget.categoriesEntity.id ?? ''));
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   // cubit.doAction(LoadProducts(widget.categoriesEntity.id ?? ''));
+
+    // });
   }
 
   @override
@@ -57,9 +64,14 @@ class _ProductsViewState extends State<ProductsView> {
             case Status.success:
               var products = state.products.data ?? [];
               return ProductsCardBuilding(
+                cubit: cubit2,
                 productsEntity: products,
                 controller: controller,
                 state: state,
+                categoryId: widget.categoriesEntity.id ?? '',
+                itemCount: state.page > state.numberOfPages
+                    ? products.length
+                    : products.length + 1,
               );
 
             case Status.failure:
@@ -82,39 +94,6 @@ class _ProductsViewState extends State<ProductsView> {
             case Status.loading:
               return const Center(child: CircularProgressIndicator());
           }
-          // if (state.products.status == Status.loading) {
-          //   return const Center(child: CircularProgressIndicator());
-          // }
-
-          // if (state.products.status == Status.failure) {
-          //   return Center(
-          //     child: Column(
-          //       mainAxisAlignment: MainAxisAlignment.center,
-          //       children: [
-          //         const Icon(Icons.error, color: Colors.red, size: 50),
-          //         const SizedBox(height: 16),
-          //         Text(
-          //           state.products.message ?? 'Failed to load products',
-          //           textAlign: TextAlign.center,
-          //           style: context.textStyle.bodyLarge!.copyWith(
-          //             color: AppColors.red,
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   );
-          // }
-
-          // if (state.products.data!.isNotEmpty) {
-          //   var products = state.products.data ?? [];
-          //   return ProductsCardBuilding(
-          //     productsEntity: products,
-          //     controller: controller,
-          //     state: state,
-          //   );
-          // }
-
-          // return const Center(child: Text('No products available'));
         },
       ),
     );

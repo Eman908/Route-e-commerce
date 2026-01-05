@@ -6,20 +6,25 @@ import 'package:e_commerce/core/utils/padding_extension.dart';
 import 'package:e_commerce/features/commerce/domain/entity/products_entity.dart';
 import 'package:e_commerce/features/commerce/presentation/products/cubit/products_cubit.dart';
 import 'package:e_commerce/features/commerce/presentation/products/cubit/products_state.dart';
+import 'package:e_commerce/features/orders/presentation/cubit/cart_cubit.dart';
+import 'package:e_commerce/features/orders/presentation/cubit/cart_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({super.key, required this.productsEntity});
+  const ProductCard({
+    super.key,
+    required this.productsEntity,
+    required this.cubit,
+  });
   final ProductsEntity productsEntity;
+  final CartCubit cubit;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProductsCubit, ProductsState>(
       builder: (context, state) {
-        final cubit = context.read<ProductsCubit>();
         final productId = productsEntity.id ?? '';
-
-        final isFavorite = cubit.state.isProductFavorite(productId);
+        final isFavorite = state.isProductFavorite(productId);
 
         return InkWell(
           onTap: () {
@@ -60,12 +65,12 @@ class ProductCard extends StatelessWidget {
                       IconButton(
                         onPressed: () {
                           if (isFavorite) {
-                            cubit.doAction(
-                              RemoveFromFav(productsEntity.id ?? ''),
+                            context.read<ProductsCubit>().doAction(
+                              RemoveFromFav(productId),
                             );
                           } else {
-                            cubit.doAction(
-                              AddProductToFav(productsEntity.id ?? ''),
+                            context.read<ProductsCubit>().doAction(
+                              AddProductToFav(productId),
                             );
                           }
                         },
@@ -85,7 +90,7 @@ class ProductCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  productsEntity.title ?? '',
+                  "${productsEntity.title ?? ''}\n",
                   maxLines: 2,
 
                   overflow: TextOverflow.ellipsis,
@@ -123,19 +128,35 @@ class ProductCard extends StatelessWidget {
 
                     const Icon(Icons.star, color: Colors.amber),
                     const Spacer(),
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: IconButton(
-                        onPressed: () {},
-                        style: IconButton.styleFrom(
-                          backgroundColor: AppColors.darkBlue,
-                          foregroundColor: AppColors.white,
-                          minimumSize: Size.zero,
-                          padding: EdgeInsets.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        ),
-                        icon: const Icon(Icons.add),
-                      ),
+                    BlocBuilder<CartCubit, CartState>(
+                      builder: (context, state) {
+                        final isInCart = cubit.state.isProductInCart(productId);
+
+                        return FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: IconButton(
+                            onPressed: () {
+                              if (isInCart) {
+                                cubit.doAction(
+                                  DeleteProductFromCart(productId),
+                                );
+                              } else {
+                                cubit.doAction(AddProductToCart(productId));
+                              }
+                            },
+                            style: IconButton.styleFrom(
+                              backgroundColor: AppColors.darkBlue,
+                              foregroundColor: AppColors.white,
+                              minimumSize: Size.zero,
+                              padding: EdgeInsets.zero,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            icon: isInCart
+                                ? const Icon(Icons.delete_outline)
+                                : const Icon(Icons.add),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ).horizontalPadding(8),
